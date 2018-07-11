@@ -1,0 +1,33 @@
+html, body, #root, .App, .login-page-container, .loading-page {
+  height: 100%; }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif; }
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto; }
+
+.loading-page img {
+  margin-top: 20rem;
+  height: 100px; }
+
+.loading-page,
+.login-page-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0; }
