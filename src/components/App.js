@@ -20,8 +20,13 @@ class App extends Component {
     const { authedUser, loading } = this.props
     return (
       <div className='App'>
-        <Route path='/' component={Dashboard} />
-        <Route exact path='/questions/:qid' component={Question} />
+        { loading === true
+          ? <LoadingPage />
+          : ( authedUser === null
+              ? <Route path='*' component={LoginPage} />
+              : <Route path='/' component={Dashboard} />
+          )
+        }
       </div>
     )
   }

@@ -34,38 +34,37 @@ class Question extends Component {
   render () {
     const { questions, match } = this.props
     const question = questions[match.params.qid]
-    return question
-    ? <div className='question text-center col-10'>
-       <h3>Would You Rather?</h3>
-          <div className='row'>
-            <div className='col-sm-6'>
-              <div className='card'>
-                <div className='card-body'>
-                  <p className='card-text'>{question.optionOne.text}</p>
-                  <button
-                    name='optionOne'
-                    className='btn btn-primary'
-                    onClick={this.handleAnswer}
-                  >Choose</button>
+    return (
+       <div className='question text-center col-10'>
+          <h3>Would You Rather?</h3>
+            <div className='row'>
+              <div className='col-sm-6'>
+                <div className='card'>
+                  <div className='card-body'>
+                    <p className='card-text'>{question.optionOne.text}</p>
+                    <button
+                      name='optionOne'
+                      className='btn btn-primary'
+                      onClick={this.handleAnswer}
+                    >Choose</button>
+                  </div>
+                </div>
+              </div>
+              <div className='col-sm-6'>
+                <div className='card'>
+                  <div className='card-body'>
+                    <p className='card-text'>{question.optionTwo.text}</p>
+                    <button
+                      name='optionTwo'
+                      className='btn btn-primary'
+                      onClick={this.handleAnswer}
+                    >Choose</button>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className='col-sm-6'>
-              <div className='card'>
-                <div className='card-body'>
-                  <p className='card-text'>{question.optionTwo.text}</p>
-                  <button
-                    name='optionTwo'
-                    className='btn btn-primary'
-                    onClick={this.handleAnswer}
-                  >Choose</button>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-      : <p>no question</p>
-
+    )
   }
 }
 
