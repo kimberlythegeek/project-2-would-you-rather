@@ -1,3 +1,6 @@
+button a {
+  color: white; }
+
 html, body, #root, .App, .login-page-container, .loading-page {
   height: 100%; }
 

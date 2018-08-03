@@ -1,5 +1,5 @@
 import React from 'react'
-import loadingIcon from '../static/logo.gif'
+import loadingIcon from '../static/images/logo.gif'
 
 const LoadingPage = () => (
   <div className='loading-page'>

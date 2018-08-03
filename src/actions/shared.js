@@ -4,7 +4,7 @@ import { receiveQuestions } from '../actions/questions'
 import { setAuthedUser } from '../actions/authedUser'
 import { showLoading, hideLoading } from '../actions/loading'
 
-const AUTHED_ID = 'sarahedo'
+const AUTHED_ID = 'tylermcginnis'
 
 export function handleInitialData () {
   return (dispatch) => {

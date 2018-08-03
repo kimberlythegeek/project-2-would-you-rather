@@ -1,36 +1,38 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { handleInitialData } from '../actions/shared'
-import { Route } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom'
+import Header from './Header'
 import LoginPage from './LoginPage'
-import DashboardContainer from './containers/DashboardContainer'
-import LoadingPage from './LoadingPage';
+import Dashboard from './Dashboard'
+import LoadingPage from './LoadingPage'
+import Question from './Question'
 
 class App extends Component {
   componentDidMount() {
-    this.props.dispatch(handleInitialData())
+    const { users, questions } = this.props
+    console.log('app props',this.props)
+    if (users.length === 0 && questions.length === 0) {
+      this.props.dispatch(handleInitialData())
+    }
   }
   render() {
-   const { authedUser, loading } = this.props
+    const { authedUser, loading } = this.props
     return (
       <div className='App'>
-      {/* <Route path='*' component={LoadingPage} /> */}
-        { loading === true
-          ? <Route path='*' component={LoadingPage} />
-          : ( authedUser === null
-              ? <Route path='*' component={LoginPage} />
-              : <Route exact path='/' component={DashboardContainer} />
-          )
-        }
+        <Route path='/' component={Dashboard} />
+        <Route exact path='/questions/:qid' component={Question} />
       </div>
     )
   }
 }
 
-const mapStateToProps = ({ authedUser, loading }) => {
+const mapStateToProps = ({ authedUser, loading, users, questions }) => {
   return {
     authedUser,
-    loading
+    loading,
+    users: Object.keys(users),
+    questions: Object.keys(questions)
   }
 }
 
