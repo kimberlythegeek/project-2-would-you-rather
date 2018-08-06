@@ -1,39 +1,46 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Route, withRouter } from 'react-router-dom'
 import QuestionCard from './QuestionCard'
 import NoQuestions from './NoQuestions'
-import Question from './Question'
+import FilterButton from './FilterButton'
 
 class QuestionPage extends React.Component {
 
-  filterQuestions () {
+  state = {
+    filter: 'unanswered'
+  }
 
+  toggleFilter = () => {
+    this.state.filter === 'unanswered'
+    ? this.setState({filter: 'answered'})
+    : this.setState({filter: 'unanswered'})
+  }
+
+  filterQuestions () {
     const { questions, authedUser, users } = this.props
     if(authedUser !== null) {
       const questionIDs = Object.keys(questions)
       const answeredIDs = Object.keys(users[authedUser].answers)
-      const unanswered = questionIDs.filter((id) => {
-        return !answeredIDs.includes(id)
+      const filteredQuestions = questionIDs.filter((id) => {
+        return this.state.filter === 'unanswered'
+        ? !answeredIDs.includes(id)
+        : answeredIDs.includes(id)
       })
-      return unanswered
+      return filteredQuestions
     }
-
   }
 
   render () {
     const unanswered = this.filterQuestions()
-    const { location } = this.props
+    const { filter } = this.state
     return (
       <div className='container'>
+          <FilterButton toggleFilter={this.toggleFilter} filter={filter} />
         <div className='row'>
-         <Route exact path='/questions/:qid' component={Question} />
-        </div>
-        <div className='row'>
-          <div className='question-container card-group col-10'>
+          <div className='question-container'>
             {unanswered && unanswered.length > 0
             ? unanswered.map((question) => (
-              <QuestionCard key={question} qid={question} location={location} />
+              <QuestionCard key={question} qid={question} filter={filter} />
             ))
             : <NoQuestions />
             }

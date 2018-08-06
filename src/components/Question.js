@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom'
 import { handleSaveAnswer } from '../actions/questions'
 import { handleUserAnswers } from '../actions/users'
 import { showLoading, hideLoading } from '../actions/loading'
-import { withRouter } from 'react-router'
+import VoteButton from './VoteButton'
+import QuestionResults from './QuestionResults'
 
 class Question extends Component {
-  state = {
-    toDashboard: false
+
+  closeModal = () => {
+    this.props.history.push('/')
   }
 
   handleAnswer = (e) => {
@@ -27,50 +28,66 @@ class Question extends Component {
       answer
     })))
     .then(() => dispatch(hideLoading()))
-    this.props.history.push('/')
+    // this.props.history.push('/')
 
   }
 
   render () {
-    const { questions, match } = this.props
+    const { questions, match, users, authedUser } = this.props
+    const user = users[authedUser]
     const question = questions[match.params.qid]
-    return (
-       <div className='question text-center col-10'>
-          <h3>Would You Rather?</h3>
-            <div className='row'>
-              <div className='col-sm-6'>
-                <div className='card'>
-                  <div className='card-body'>
-                    <p className='card-text'>{question.optionOne.text}</p>
-                    <button
-                      name='optionOne'
-                      className='btn btn-primary'
-                      onClick={this.handleAnswer}
-                    >Choose</button>
-                  </div>
-                </div>
-              </div>
-              <div className='col-sm-6'>
-                <div className='card'>
-                  <div className='card-body'>
-                    <p className='card-text'>{question.optionTwo.text}</p>
-                    <button
-                      name='optionTwo'
-                      className='btn btn-primary'
-                      onClick={this.handleAnswer}
-                    >Choose</button>
-                  </div>
-                </div>
+    const author = users[question.author]
+    const answered = user.answers.hasOwnProperty(question.id)
+
+    return  (
+      <div className='question text-center question-modal'>
+      <button type="button" class="close" aria-label="Close" onClick={this.closeModal}>
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h3>Would You Rather?</h3>
+        <div className='row'>
+        <div className='col'>
+          <img src={author.avatarURL} alt='' className='small-avatar'/>
+          <p className='small'>asked by {author.name}</p>
+        </div>
+        </div>
+        <div className='row'>
+          <div className='col-sm-6'>
+            <div className='card'>
+              <div className='card-body question-body'>
+                <p className='card-text option-text'>{question.optionOne.text}</p>
+                  { answered === false
+                    ? <VoteButton handleAnswer={this.handleAnswer}/>
+                    : <QuestionResults question={question} option={question.optionOne}/>
+                  }
               </div>
             </div>
+          </div>
+          <div className='col-sm-6'>
+            <div className='card'>
+              <div className='card-body question-body'>
+                <p className='card-text option-text'>{question.optionTwo.text}</p>
+                  { answered === false
+                    ? <VoteButton handleAnswer={this.handleAnswer}/>
+                    : <QuestionResults question={question} option={question.optionTwo} />
+                  }
+              </div>
+            </div>
+          </div>
         </div>
+    </div>
     )
+    // return user.answers.hasOwnProperty(question.id)
+    // ? <AnsweredQuestion question={question} />
+    // : <UnansweredQuestion question={question} handleAnswer={this.handleAnswer} />
   }
 }
 
-function mapStateToProps({ questions }) {
+function mapStateToProps({ questions, authedUser, users }) {
   return {
-    questions
+    questions,
+    users,
+    authedUser
   }
 }
 

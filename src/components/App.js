@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { handleInitialData } from '../actions/shared'
-import { Route, Switch, withRouter } from 'react-router-dom'
-import Header from './Header'
+import { BrowserRouter, Route } from 'react-router-dom'
 import LoginPage from './LoginPage'
 import Dashboard from './Dashboard'
 import LoadingPage from './LoadingPage'
 import Question from './Question'
 
 class App extends Component {
+  state = {
+    showOverlay: false
+  }
+
   componentDidMount() {
     const { users, questions } = this.props
     console.log('app props',this.props)
@@ -16,19 +19,30 @@ class App extends Component {
       this.props.dispatch(handleInitialData())
     }
   }
+
+  toggleOverlay() {
+    this.setState({ showOverlay: !this.state.showOverlay})
+  }
   render() {
     const { authedUser, loading } = this.props
     return (
-      <div className='App'>
+    <BrowserRouter>
+    <div className='App'>
         { loading === true
           ? <LoadingPage />
           : ( authedUser === null
               ? <Route path='*' component={LoginPage} />
-              : <Route path='/' component={Dashboard} />
+              :
+              <div>
+                <Route path='/' component={Dashboard} />
+                <Route exact path='/questions/:qid' component={Question} />
+                <Route path='/questions/' render={() => (<div className='modal-overlay'></div>)} />
+              </div>
           )
         }
       </div>
-    )
+    </BrowserRouter>
+  )
   }
 }
 

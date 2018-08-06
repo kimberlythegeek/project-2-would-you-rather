@@ -150,10 +150,10 @@ function formatQuestion ({ optionOneText, optionTwoText, author }) {
   }
 }
 
-function formatUser ({ username, name }) {
+function formatUser ({ username, fullName }) {
   return {
     id: username,
-    name,
+    name: fullName,
     avatarURL: 'http://i.pravatar.cc/300',
     answers: [],
     questions: []
@@ -167,7 +167,7 @@ export function _saveUser (user) {
     setTimeout(() => {
       users = {
         ...users,
-        [user.id]: formattedUser
+        [formattedUser.id]: formattedUser
       }
 
       res(formattedUser)
@@ -200,6 +200,7 @@ export function _saveQuestion (question) {
 }
 
 export function _saveQuestionAnswer ({ authedUser, qid, answer }) {
+  console.log(users)
   return new Promise((res, rej) => {
     setTimeout(() => {
       users = {

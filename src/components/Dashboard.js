@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import { setAuthedUser } from '../actions/authedUser'
 import QuestionPage from './QuestionPage';
 import Header from './Header'
@@ -22,8 +21,8 @@ const mapDispatchToProps = (dispatch) => {
 const Dashboard = ({ questionIds, onLogOut, location }) => (
   <div className='col-10 dashboard-page-container'>
     <Header onLogOut={onLogOut} />
-    <h1>Dashboard</h1>location: {location.pathname}
-    <QuestionPage questionIds={questionIds} location={location} />
+    <h1>Dashboard</h1>
+    <QuestionPage questionIds={questionIds} />
   </div>
 )
 
